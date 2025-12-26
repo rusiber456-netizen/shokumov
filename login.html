@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход | Издательский дом</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="logo/logo.png">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo-link">
+                <img src="logo/logo.png" alt="Логотип Издательского дома" class="logo">
+            </a>
+            <h1 class="site-title">Издательский дом «Литера»</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="index.html#news">Новости</a></li>
+                    <li><a href="index.html#services">Услуги</a></li>
+                    <li><a href="register.html">Регистрация</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <main class="container auth-container">
+        <div class="auth-form">
+            <h2>Вход в личный кабинет</h2>
+            
+            <!-- Сообщение об ошибке -->
+            <div id="error-message" class="error-message" style="display: none;">
+                Неверный логин или пароль
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login">Логин:</label>
+                    <input type="text" id="login" name="login" required placeholder="Введите ваш логин">
+                    <small class="error-text"></small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required placeholder="Введите ваш пароль">
+                    <small class="error-text"></small>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Войти</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Нет аккаунта? <a href="register.html" style="color: #3498db;">Зарегистрироваться</a>
+            </p>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 5px;">
+                <p style="margin: 0; font-size: 0.9rem; color: #666;">
+                    <strong>Тестовые данные:</strong><br>
+                    Обычный пользователь: shamil / 123456<br>
+                    Администратор: admin / admin
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 Издательский дом «Литера». Шокумов Шамиль Азаматович.</p>
+            <p>Контакт: info@litera-house.ru | Телефон: +7 (999) 123-45-67</p>
+            <p>Сайт доступен по адресу: <a href="http://shokumov-pp08.kitie.ru">shokumov-pp08.kitie.ru</a></p>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора | Издательский дом</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="logo/logo.png">
+    <style>
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .stat-new { border-top: 4px solid #3498db; }
+        .stat-solved { border-top: 4px solid #27ae60; }
+        .stat-rejected { border-top: 4px solid #e74c3c; }
+        .stat-total { border-top: 4px solid #f39c12; }
+        
+        .admin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #7f8c8d;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn:hover {
+            color: #2c3e50;
+        }
+        
+        .tab-btn.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .search-box {
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .search-input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .user-row, .request-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr 150px 100px;
+            gap: 1rem;
+            padding: 1rem;
+            align-items: center;
+            background: white;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .user-row:hover, .request-row:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .user-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .badge-new { background-color: #e3f2fd; color: #1976d2; }
+        .badge-solved { background-color: #e8f5e9; color: #2e7d32; }
+        .badge-rejected { background-color: #ffebee; color: #c62828; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-solve { background-color: #27ae60; color: white; }
+        .btn-reject { background-color: #e74c3c; color: white; }
+        .btn-edit { background-color: #3498db; color: white; }
+        .btn-delete { background-color: #95a5a6; color: white; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .category-management {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .categories-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .category-tag {
+            background: #ecf0f1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .category-tag .remove {
+            color: #e74c3c;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .add-category-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .user-row, .request-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .admin-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo-link">
+                <img src="logo/logo.png" alt="Логотип Издательского дома" class="logo">
+            </a>
+            <h1 class="site-title">Панель администратора</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">На сайт</a></li>
+                    <li><a href="#" id="logout-btn" class="btn-login logout-btn">Выйти</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <main class="main container">
+        <div class="admin-header">
+            <h2 style="margin: 0; color: #2c3e50;">Управление сайтом</h2>
+            <div class="user-info" style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-avatar-small" id="admin-avatar">A</div>
+                <div>
+                    <div style="font-weight: 500;">Администратор</div>
+                    <div style="font-size: 0.9rem; color: #7f8c8d;">admin@litera-house.ru</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="admin-stats">
+            <div class="stat-card stat-new">
+                <div class="stat-value" id="stat-new">0</div>
+                <div class="stat-label">Новых заявок</div>
+            </div>
+            <div class="stat-card stat-solved">
+                <div class="stat-value" id="stat-solved">0</div>
+                <div class="stat-label">Решенных заявок</div>
+            </div>
+            <div class="stat-card stat-rejected">
+                <div class="stat-value" id="stat-rejected">0</div>
+                <div class="stat-label">Отклоненных заявок</div>
+            </div>
+            <div class="stat-card stat-total">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Всего пользователей</div>
+            </div>
+        </div>
+
+        <!-- Табы -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="requests">Заявки</button>
+            <button class="tab-btn" data-tab="users">Пользователи</button>
+            <button class="tab-btn" data-tab="categories">Категории</button>
+            <button class="tab-btn" data-tab="news">Новости</button>
+        </div>
+
+        <!-- Содержимое таба "Заявки" -->
+        <div id="tab-requests" class="tab-content active">
+            <div class="search-box">
+                <input type="text" class="search-input" id="search-requests" placeholder="Поиск по заявкам...">
+            </div>
+            
+            <div id="requests-list">
+                <!-- Заявки будут загружены через JavaScript -->
+            </div>
+        </div>
+
+        <!-- Содержимое таба "Пользователи" -->
+        <div id="tab-users" class="tab-content">
+            <div class="search-box">
+                <input type="text" class="search-input" id="search-users" placeholder="Поиск пользователей...">
+            </div>
+            
+            <div id="users-list">
+                <!-- Пользователи будут загружены через JavaScript -->
+            </div>
+        </div>
+
+        <!-- Содержимое таба "Категории" -->
+        <div id="tab-categories" class="tab-content">
+            <div class="category-management">
+                <h3 style="margin-top: 0;">Управление категориями заявок</h3>
+                
+                <div class="categories-list" id="categories-list">
+                    <!-- Категории будут загружены через JavaScript -->
+                </div>
+                
+                <div class="add-category-form">
+                    <input type="text" id="new-category" placeholder="Новая категория" 
+                           style="flex: 1; padding: 0.75rem; border: 2px solid #ddd; border-radius: 5px;">
+                    <button class="btn" id="add-category-btn">Добавить</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Содержимое таба "Новости" -->
+        <div id="tab-news" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0;">Управление новостями</h3>
+                <button class="btn" id="add-news-btn">+ Добавить новость</button>
+            </div>
+            
+            <div id="news-list">
+                <!-- Новости будут загружены через JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно изменения статуса -->
+    <div id="status-modal" class="modal">
+        <div class="modal-content">
+            <h3>Изменение статуса заявки</h3>
+            <div style="margin: 1.5rem 0;">
+                <p><strong>Заявка:</strong> <span id="modal-request-title"></span></p>
+                <p><strong>Текущий статус:</strong> <span id="modal-current-status"></span></p>
+            </div>
+            
+            <div class="form-group">
+                <label for="status-select">Новый статус:</label>
+                <select id="status-select" class="search-input">
+                    <option value="">Выберите статус</option>
+                    <option value="Решена">Решена</option>
+                    <option value="Отклонена">Отклонена</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="reject-reason-group" style="display: none;">
+                <label for="reject-reason">Причина отказа:</label>
+                <textarea id="reject-reason" rows="3" class="search-input" 
+                         placeholder="Укажите причину отказа..."></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-cancel" id="cancel-status">Отмена</button>
+                <button class="btn" id="save-status">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления новости -->
+    <div id="news-modal" class="modal">
+        <div class="modal-content">
+            <h3>Добавление новости</h3>
+            
+            <form id="news-form">
+                <div class="form-group">
+                    <label for="news-title">Заголовок *</label>
+                    <input type="text" id="news-title" class="search-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="news-category">Категория</label>
+                    <input type="text" id="news-category" class="search-input" placeholder="Например: Анонс">
+                </div>
+                
+                <div class="form-group">
+                    <label for="news-content">Содержание *</label>
+                    <textarea id="news-content" rows="5" class="search-input" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="news-image">Ссылка на изображение</label>
+                    <input type="text" id="news-image" class="search-input" 
+                          placeholder="https://example.com/image.jpg">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" id="cancel-news">Отмена</button>
+                    <button type="submit" class="btn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 Издательский дом «Литера». Шокумов Шамиль Азаматович.</p>
+            <p>Административная панель | Доступ ограничен</p>
+        </div>
+    </footer>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

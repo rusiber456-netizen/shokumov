@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Издательский дом «Литера» | Главная</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="logo/logo.png">
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo-link">
+                <img src="logo/logo.png" alt="Логотип Издательского дома" class="logo">
+            </a>
+            <h1 class="site-title">Издательский дом «Литера»</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="#news">Новости</a></li>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="login.html" class="btn-login">Войти</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <!-- Вертикальное меню для ПК -->
+    <aside class="sidebar">
+        <nav class="vertical-menu">
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="#news">Новости</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#about">О нас</a></li>
+                <li><a href="personal.html">Мои заявки</a></li>
+                <li><a href="admin.html" class="admin-link">Панель админа</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main container">
+        <section class="hero">
+            <h2>Ваши книги — наша миссия</h2>
+            <p>Профессиональное издание, редактура, дизайн и продвижение ваших произведений</p>
+            <a href="register.html" class="btn">Создать заявку</a>
+        </section>
+
+        <!-- Счётчик посетителей -->
+        <div class="counter">
+            <h3>Посетителей онлайн: <span id="visitor-count">157</span></h3>
+        </div>
+
+        <!-- Блок новостей -->
+        <section id="news" class="news">
+            <h2>Последние новости</h2>
+            <div class="news-grid">
+                <article class="news-card">
+                    <div class="news-img-container">
+                        <img src="images/news1.jpg" alt="Новость 1" class="news-img">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">15.12.2025</span>
+                        <span class="news-category">Анонс</span>
+                        <h4>Открытие нового филиала</h4>
+                        <p>Мы рады сообщить об открытии филиала в Москве!</p>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-img-container">
+                        <img src="images/news2.jpg" alt="Новость 2" class="news-img">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">10.12.2025</span>
+                        <span class="news-category">Конкурс</span>
+                        <h4>Литературный конкурс 2024</h4>
+                        <p>Принимаем заявки на участие в ежегодном конкурсе</p>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-img-container">
+                        <img src="images/news3.jpg" alt="Новость 3" class="news-img">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">05.12.2025</span>
+                        <span class="news-category">Новинка</span>
+                        <h4>Новая серия книг</h4>
+                        <p>Представляем серию "Современная проза"</p>
+                    </div>
+                </article>
+                
+                <article class="news-card">
+                    <div class="news-img-container">
+                        <img src="images/news4.jpg" alt="Новость 4" class="news-img">
+                    </div>
+                    <div class="news-content">
+                        <span class="news-date">01.12.2025</span>
+                        <span class="news-category">Мероприятие</span>
+                        <h4>Встреча с авторами</h4>
+                        <p>Приглашаем на встречу с известными писателями</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Блок услуг -->
+        <section id="services" class="services">
+            <h2>Наши услуги</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Редактура</h3>
+                    <p>Профессиональная правка текстов</p>
+                </div>
+                <div class="service-card">
+                    <h3>Дизайн обложки</h3>
+                    <p>Создание уникальных обложек</p>
+                </div>
+                <div class="service-card">
+                    <h3>Вёрстка</h3>
+                    <p>Подготовка к печати</p>
+                </div>
+                <div class="service-card">
+                    <h3>Продвижение</h3>
+                    <p>Маркетинг и реклама книг</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Издательский дом «Литера». Шокумов Шамиль Азаматович.</p>
+            <p>Контакт: info@litera-house.ru | Телефон: +7 (999) 123-45-67</p>
+            <p>Сайт доступен по адресу: <a href="http://shokumov-pp08.kitie.ru">shokumov-pp08.kitie.ru</a></p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

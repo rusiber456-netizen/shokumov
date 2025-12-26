@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | Издательский дом</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="logo/logo.png">
+    <style>
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .user-details h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        
+        .user-details p {
+            margin: 0.25rem 0 0 0;
+            color: #666;
+        }
+        
+        .logout-btn {
+            background-color: #e74c3c;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .requests-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover {
+            background: #f0f7ff;
+        }
+        
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .no-requests {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        
+        .no-requests h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        
+        .no-requests p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .request-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-new {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-solved {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-rejected {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .actions-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-cancel {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .create-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .create-form h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .requests-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filters {
+                justify-content: center;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo-link">
+                <img src="logo/logo.png" alt="Логотип Издательского дома" class="logo">
+            </a>
+            <h1 class="site-title">Издательский дом «Литера»</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="index.html#news">Новости</a></li>
+                    <li><a href="index.html#services">Услуги</a></li>
+                    <li><a href="#" id="logout-btn" class="btn-login logout-btn">Выйти</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <nav class="vertical-menu">
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="index.html#news">Новости</a></li>
+                <li><a href="index.html#services">Услуги</a></li>
+                <li><a href="personal.html" class="active">Мои заявки</a></li>
+                <li><a href="#" id="create-request-btn">+ Создать заявку</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main container">
+        <div class="profile-header">
+            <div class="user-info">
+                <div class="user-avatar" id="user-avatar">Ш</div>
+                <div class="user-details">
+                    <h2 id="user-name">Шокумов Шамиль Азаматович</h2>
+                    <p id="user-email">shamil@example.com</p>
+                </div>
+            </div>
+            <button class="btn logout-btn" id="logout-btn-main">Выйти</button>
+        </div>
+
+        <!-- Форма создания заявки (скрыта по умолчанию) -->
+        <div id="create-request-form" class="create-form" style="display: none;">
+            <h3>Создание новой заявки</h3>
+            <form id="request-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="request-title">Название заявки *</label>
+                        <input type="text" id="request-title" name="title" required 
+                               placeholder="Например: Редактура книги">
+                        <small class="error-text"></small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="request-category">Категория *</label>
+                        <select id="request-category" name="category" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="Редактура">Редактура</option>
+                            <option value="Дизайн обложки">Дизайн обложки</option>
+                            <option value="Вёрстка">Вёрстка</option>
+                            <option value="Печать">Печать</option>
+                            <option value="Продвижение">Продвижение</option>
+                        </select>
+                        <small class="error-text"></small>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="request-description">Описание *</label>
+                    <textarea id="request-description" name="description" required 
+                              rows="4" placeholder="Подробное описание вашей заявки..."></textarea>
+                    <small class="error-text"></small>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn">Создать заявку</button>
+                    <button type="button" class="btn btn-cancel" id="cancel-request-btn">Отмена</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Панель управления заявками -->
+        <div class="requests-actions">
+            <h2 style="margin: 0; color: #2c3e50;">Мои заявки</h2>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Все</button>
+                <button class="filter-btn" data-filter="Новая">Новые</button>
+                <button class="filter-btn" data-filter="Решена">Решенные</button>
+                <button class="filter-btn" data-filter="Отклонена">Отклоненные</button>
+            </div>
+        </div>
+
+        <!-- Таблица заявок -->
+        <div id="requests-table-container">
+            <table class="requests-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Название</th>
+                        <th>Категория</th>
+                        <th>Статус</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="requests-body">
+                    <!-- Заявки будут загружены через JavaScript -->
+                </tbody>
+            </table>
+            
+            <!-- Сообщение если нет заявок -->
+            <div id="no-requests" class="no-requests" style="display: none;">
+                <h3>У вас пока нет заявок</h3>
+                <p>Создайте свою первую заявку на публикацию или редактирование книги</p>
+                <button class="btn" id="create-first-btn">Создать первую заявку</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h3>Подтверждение удаления</h3>
+            <p>Вы уверены, что хотите удалить эту заявку? Это действие невозможно отменить.</p>
+            <div class="modal-actions">
+                <button class="btn btn-cancel" id="cancel-delete">Отмена</button>
+                <button class="btn btn-delete" id="confirm-delete">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно деталей заявки -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title"></h3>
+            <div style="margin: 1.5rem 0;">
+                <p><strong>Дата создания:</strong> <span id="modal-date"></span></p>
+                <p><strong>Категория:</strong> <span id="modal-category"></span></p>
+                <p><strong>Статус:</strong> <span id="modal-status"></span></p>
+                <div id="modal-reject-reason" style="display: none; margin-top: 1rem; padding: 1rem; background: #ffebee; border-radius: 5px;">
+                    <strong>Причина отказа:</strong> <span id="modal-reason-text"></span>
+                </div>
+            </div>
+            <div style="margin: 1.5rem 0;">
+                <h4 style="margin-bottom: 0.5rem; color: #2c3e50;">Описание:</h4>
+                <p id="modal-description" style="color: #555; line-height: 1.6;"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-cancel" id="close-details">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Издательский дом «Литера». Шокумов Шамиль Азаматович.</p>
+            <p>Контакт: info@litera-house.ru | Телефон: +7 (999) 123-45-67</p>
+            <p>Сайт доступен по адресу: <a href="http://shokumov-pp08.kitie.ru">shokumov-pp08.kitie.ru</a></p>
+        </div>
+    </footer>
+
+    <script src="js/personal.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | Издательский дом</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon" href="logo/logo.png">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <a href="index.html" class="logo-link">
+                <img src="logo/logo.png" alt="Логотип Издательского дома" class="logo">
+            </a>
+            <h1 class="site-title">Издательский дом «Литера»</h1>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="index.html#news">Новости</a></li>
+                    <li><a href="index.html#services">Услуги</a></li>
+                    <li><a href="login.html">Вход</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Меню">☰</button>
+        </div>
+    </header>
+
+    <main class="container auth-container">
+        <div class="auth-form">
+            <h2>Регистрация</h2>
+            
+            <!-- Сообщение об ошибке -->
+            <div id="error-message" class="error-message" style="display: none;"></div>
+            
+            <!-- Сообщение об успехе -->
+            <div id="success-message" class="error-message" style="display: none; background-color: #27ae60;"></div>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="fio">ФИО *</label>
+                    <input type="text" id="fio" name="fio" required 
+                           placeholder="Иванов Иван Иванович"
+                           pattern="[А-Яа-яЁё\s\-]+"
+                           title="Только кириллические буквы, пробелы и дефис">
+                    <small class="error-text"></small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login">Логин * (только латиница)</label>
+                    <input type="text" id="login" name="login" required 
+                           placeholder="ivanov"
+                           pattern="[A-Za-z0-9]+"
+                           title="Только латинские буквы и цифры">
+                    <small class="error-text"></small>
+                    <div id="login-check" style="margin-top: 0.25rem; font-size: 0.85rem;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="ivanov@example.com">
+                    <small class="error-text"></small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Пароль * (минимум 6 символов)</label>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Не менее 6 символов"
+                           minlength="6">
+                    <small class="error-text"></small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password_confirm">Повтор пароля *</label>
+                    <input type="password" id="password_confirm" name="password_confirm" required 
+                           placeholder="Повторите пароль">
+                    <small class="error-text"></small>
+                </div>
+                
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="agree" name="agree" required>
+                    <label for="agree">Я согласен на обработку персональных данных *</label>
+                    <small class="error-text"></small>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Зарегистрироваться</button>
+            </form>
+            
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Уже есть аккаунт? <a href="login.html" style="color: #3498db;">Войти</a>
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 Издательский дом «Литера». Шокумов Шамиль Азаматович.</p>
+            <p>Контакт: info@litera-house.ru | Телефон: +7 (999) 123-45-67</p>
+            <p>Сайт доступен по адресу: <a href="http://shokumov-pp08.kitie.ru">shokumov-pp08.kitie.ru</a></p>
+        </div>
+    </footer>
+
+    <script src="js/register.js"></script>
+</body>
+</html>
